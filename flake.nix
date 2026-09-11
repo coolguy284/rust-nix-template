@@ -13,7 +13,7 @@
       in
         {
           packages."${system}".rust-nix-compile-test =
-            rustPlatform.buildRustPackage (finalAttrs: {
+            nixpkgs.rustPlatform.buildRustPackage (finalAttrs: {
               pname = "rust-nix-compile-test";
               version = "0.1.0";
               
