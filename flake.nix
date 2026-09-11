@@ -12,7 +12,7 @@
         system = "x86_64-linux";
       in
         {
-          packages."${system}".rust-nix-compile-test =
+          packages."${system}".default =
             nixpkgs.rustPlatform.buildRustPackage (finalAttrs: {
               pname = "rust-nix-compile-test";
               version = "0.1.0";
