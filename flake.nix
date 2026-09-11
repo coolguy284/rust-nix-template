@@ -8,5 +8,12 @@
   
   outputs =
     { self, nixpkgs, ... }:
-    0;
+      rustPlatform.buildRustPackage (finalAttrs: {
+        pname = "rust-nix-compile-test";
+        version = "0.1.0";
+        
+        src = ./.;
+        
+        cargoHash = "";
+      });
 }
