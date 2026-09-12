@@ -68,7 +68,7 @@
       in
         {
           # "pkgs.symlinkJoin" from https://www.google.com/search?q=nix+combine+multiple+derivations+into+one+big+output
-          packages."${system}".default =
+          packages."${system}".build-output =
             customPkgs.copyJoin {
               name = "build-out";
               pkgsToCombine = outPkgs;
