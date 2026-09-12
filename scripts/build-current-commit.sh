@@ -4,7 +4,7 @@ set -euo pipefail
 
 cd "${0%/*}/.."
 
-store_path=$(nix build .#build-output --no-link --print-out-paths)
+store_path=$(nix build .#build --no-link --print-out-paths)
 
 mkdir -p build
 

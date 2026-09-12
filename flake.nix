@@ -67,10 +67,12 @@
         };
       in
         {
+          # packages."${system}".default output left unused in case a nix package output is desired
+          
           # "pkgs.symlinkJoin" from https://www.google.com/search?q=nix+combine+multiple+derivations+into+one+big+output
-          packages."${system}".build-output =
+          packages."${system}".build =
             customPkgs.copyJoin {
-              name = "build-out";
+              name = "build";
               pkgsToCombine = outPkgs;
               pkgSubdir = "/bin";
             };
