@@ -46,7 +46,7 @@
                     
                     # https://stackoverflow.com/questions/1445452/shell-script-for-loop-syntax/1445471#1445471
                     # https://stackoverflow.com/questions/1886374/how-to-find-the-length-of-an-array-in-shell/1886483#1886483
-                    for i in `seq 0 ''$((''${#folderNamesArr[@]} - 1))`; do
+                    for i in ''$(seq 0 ''$((''${#folderNamesArr[@]} - 1))); do
                       cp -r ''${folderPkgsArr[i]} $out/''${folderNamesArr[i]}
                     done
                   '';
