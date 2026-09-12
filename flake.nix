@@ -27,10 +27,13 @@
         customPkgs = {
           # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
           copyJoin =
-            { paths, ... } @ derivationParams:
+            { pkgsToCombine, ... } @ derivationParams:
               pkgs.stdenv.mkDerivation (
-                (removeAttrs derivationParams [ "paths" ])
+                derivationParams
                 // {
+                  folderNames = builtins.attrNames pkgsToCombine;
+                  folderPkgs = builtins.attrValues pkgsToCombine;
+                  
                   pkg1 = outPkgs.x86_64-linux;
                   pkg2 = outPkgs.x86_64-windows;
                   
@@ -40,6 +43,8 @@
                     mkdir -p $out
                     cp -r $pkg1 $out/pkg1
                     cp -r $pkg2 $out/pkg2
+                    echo $folderNames > $out/folderNames
+                    echo $folderPkgs > $out/folderPkgs
                   '';
                 }
               );
@@ -58,10 +63,7 @@
           packages."${system}".default =
             customPkgs.copyJoin {
               name = "build-out";
-              paths = [
-                (toString outPkgs.x86_64-linux)
-                (toString outPkgs.x86_64-windows)
-              ];
+              pkgsToCombine = outPkgs;
             };
         };
 }
