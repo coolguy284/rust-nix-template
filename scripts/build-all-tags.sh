@@ -4,12 +4,23 @@ set -euo pipefail
 
 cd "${0%/*}/.."
 
+final_exit_code=0
+
 # https://www.geeksforgeeks.org/linux-unix/bash-scripting-functions/
 buildTag(){
   tag=$1
   
   if [ ! -d "build/tags/$tag" ]; then
     echo Building version $tag...
+    
+    # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786104#786104
+    nix build git+file:.?ref=$tag#build-output --no-link || build_result=$?
+    
+    if [ $build_result -eq 1 ]; then
+      echo Error building version $tag
+      final_exit_code=$build_result
+      return
+    fi
     
     store_path=$(nix build git+file:.?ref=$tag#build-output --no-link --print-out-paths)
     
@@ -25,3 +36,5 @@ mkdir -p build/tags
 for tag in $gitTags; do
   buildTag $tag
 done
+
+exit $final_exit_code
