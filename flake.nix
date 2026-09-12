@@ -20,7 +20,7 @@
               
               src = ./.;
               
-              cargoHash = "";
+              cargoHash = "sha256-QipW8C5W0f7yklYMMCJU8vcZ70WP5JpsxX9gcbR8AhA";
             });
         };
 }
