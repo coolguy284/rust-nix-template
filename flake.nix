@@ -11,18 +11,22 @@
       let
         system = "x86_64-linux";
         
+        lib = nixpkgs.lib;
         # "import nixpkgs { inherit system; }" from https://www.google.com/search?q=nixos+attribute+rustplatform+missing+on+nixpkgs+flake+input
         pkgs = (import nixpkgs { inherit system; }).pkgs;
         
         rustPackageParams =
-          finalAttrs: {
-            pname = "rust-nix-compile-test";
-            version = "0.2.0";
-            
-            src = ./.;
-            
-            cargoHash = "sha256-rX1WYRp51iLozeA2hDjbQAKCxvU9kpupl2ltIhqvug0";
-          };
+          let
+            cargoFileContents = lib.importTOML ./Cargo.toml;
+          in
+            finalAttrs: {
+              pname = cargoFileContents.package.name;
+              version = cargoFileContents.package.version;
+              
+              src = ./.;
+              
+              cargoHash = "sha256-rX1WYRp51iLozeA2hDjbQAKCxvU9kpupl2ltIhqvug0";
+            };
         
         customPkgs = {
           # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
