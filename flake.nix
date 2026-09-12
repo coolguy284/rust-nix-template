@@ -46,8 +46,12 @@
                     # https://stackoverflow.com/questions/9293887/how-to-read-a-space-delimited-string-into-an-array-in-bash/9294015#9294015
                     folderNamesArr=($folderNames)
                     
+                    echo ''$((''${#folderNamesArr[@]} - 1)) > $out/te
+                    echo "$(seq 0 ''${#folderNamesArr[@]})" > $out/te2
+                    echo `seq 0 ''${#folderNamesArr[@]}` > $out/te3
+                    
                     # https://stackoverflow.com/questions/1445452/shell-script-for-loop-syntax/1445471#1445471
-                    for i in `seq 1 1`; do
+                    for i in `seq 0 ''$((''${#folderNamesArr[@]} - 1))`; do
                       mkdir $out/''${folderNamesArr[i]}
                     done
                     
