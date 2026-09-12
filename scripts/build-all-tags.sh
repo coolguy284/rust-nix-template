@@ -11,7 +11,7 @@ buildTag(){
   if [ ! -d "build/tags/$tag" ]; then
     echo Building version $tag...
     
-    store_path=$(nix build git+file:.?ref=$tag --no-link --print-out-paths)
+    store_path=$(nix build git+file:.?ref=$tag#build-output --no-link --print-out-paths)
     
     cp -r $store_path build/tags/$tag
   fi
