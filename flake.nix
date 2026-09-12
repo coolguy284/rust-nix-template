@@ -26,13 +26,14 @@
         
         customPkgs = {
           # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
+          # "toString" from https://www.google.com/search?q=nix+convert+derivation+to+a+store+path+string
           copyJoin =
             { pkgsToCombine, ... } @ derivationParams:
               pkgs.stdenv.mkDerivation (
-                derivationParams
+                (removeAttrs derivationParams [ "pkgsToCombine" ])
                 // {
                   folderNames = builtins.attrNames pkgsToCombine;
-                  folderPkgs = builtins.attrValues pkgsToCombine;
+                  folderPkgs = map (pkg: toString pkg) (builtins.attrValues pkgsToCombine);
                   
                   pkg1 = outPkgs.x86_64-linux;
                   pkg2 = outPkgs.x86_64-windows;
@@ -41,8 +42,18 @@
                   
                   installPhase = ''
                     mkdir -p $out
+                    
+                    # https://stackoverflow.com/questions/9293887/how-to-read-a-space-delimited-string-into-an-array-in-bash/9294015#9294015
+                    folderNamesArr=($folderNames)
+                    
+                    # https://stackoverflow.com/questions/1445452/shell-script-for-loop-syntax/1445471#1445471
+                    for i in `seq 1 1`; do
+                      mkdir $out/''${folderNamesArr[i]}
+                    done
+                    
                     cp -r $pkg1 $out/pkg1
                     cp -r $pkg2 $out/pkg2
+                    
                     echo $folderNames > $out/folderNames
                     echo $folderPkgs > $out/folderPkgs
                   '';
@@ -59,7 +70,6 @@
           # "pkgs.pkgsCross" from https://www.google.com/search?q=rustplatform+buildrustpackage+specify+output+platform
           # "pkgs.pkgsCross.mingwW64" from https://www.google.com/search?q=nixos+pkgscross+rust+x86_64-pc-windows-gnu
           # "pkgs.symlinkJoin" from https://www.google.com/search?q=nix+combine+multiple+derivations+into+one+big+output
-          # "toString" from https://www.google.com/search?q=nix+convert+derivation+to+a+store+path+string
           packages."${system}".default =
             customPkgs.copyJoin {
               name = "build-out";
