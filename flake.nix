@@ -24,6 +24,27 @@
             cargoHash = "sha256-QipW8C5W0f7yklYMMCJU8vcZ70WP5JpsxX9gcbR8AhA";
           };
         
+        customPkgs = {
+          # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
+          copyJoin =
+            { paths, ... }@params:
+              pkgs.stdenv.mkDerivation (
+                params
+                // {
+                  pkg1 = outPkgs.x86_64-linux;
+                  pkg2 = outPkgs.x86_64-windows;
+                  
+                  dontUnpack = true;
+                  
+                  installPhase = ''
+                    mkdir -p $out
+                    cp -r $pkg1 $out/pkg1
+                    cp -r $pkg2 $out/pkg2
+                  '';
+                }
+              );
+        };
+        
         outPkgs = {
           x86_64-linux = pkgs.rustPlatform.buildRustPackage rustPackageParams;
           x86_64-windows = pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage rustPackageParams;
@@ -35,7 +56,7 @@
           # "pkgs.symlinkJoin" from https://www.google.com/search?q=nix+combine+multiple+derivations+into+one+big+output
           # "toString" from https://www.google.com/search?q=nix+convert+derivation+to+a+store+path+string
           packages."${system}".default =
-            pkgs.symlinkJoin {
+            customPkgs.copyJoin {
               name = "build-out";
               paths = [
                 (toString outPkgs.x86_64-linux)
