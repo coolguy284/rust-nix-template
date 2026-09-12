@@ -8,4 +8,4 @@ mkdir -p build
 
 rm -rf build/current
 
-cp -r $store_path/bin build/current
+cp -r $store_path build/current
