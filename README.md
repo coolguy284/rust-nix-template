@@ -14,3 +14,7 @@ See `scripts` folder for usage scripts. To create a new project, copy the follow
 - `flake.lock`
 - `flake.nix`
 - `rustfmt.toml`
+
+## Info
+
+`scripts-override` folder contains replacement scripts for building this template that should be used instead of the scripts in `scripts`.
