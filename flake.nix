@@ -29,7 +29,7 @@
           copyJoin =
             { paths, ... }@params:
               pkgs.stdenv.mkDerivation (
-                params
+                (removeAttrs params [ "paths" ])
                 // {
                   pkg1 = outPkgs.x86_64-linux;
                   pkg2 = outPkgs.x86_64-windows;
