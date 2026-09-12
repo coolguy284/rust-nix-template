@@ -10,7 +10,8 @@ final_exit_code=0
 buildTag(){
   tag=$1
   
-  ./scripts/build-one-tag.sh $tag || 0
+  # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
+  ./scripts/build-one-tag.sh $tag || true
 }
 
 gitTags=$(git tag)
