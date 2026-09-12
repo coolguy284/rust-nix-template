@@ -23,6 +23,11 @@
             
             cargoHash = "sha256-QipW8C5W0f7yklYMMCJU8vcZ70WP5JpsxX9gcbR8AhA";
           };
+        
+        outPkgs = {
+          x86_64-linux = pkgs.rustPlatform.buildRustPackage rustPackageParams;
+          x86_64-windows = pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage rustPackageParams;
+        };
       in
         {
           # "pkgs.pkgsCross" from https://www.google.com/search?q=rustplatform+buildrustpackage+specify+output+platform
@@ -33,8 +38,8 @@
             pkgs.symlinkJoin {
               name = "build-out";
               paths = [
-                (toString (pkgs.rustPlatform.buildRustPackage rustPackageParams))
-                (toString (pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage rustPackageParams))
+                (toString outPkgs.x86_64-linux)
+                (toString outPkgs.x86_64-windows)
               ];
             };
         };
