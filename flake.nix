@@ -17,11 +17,11 @@
         rustPackageParams =
           finalAttrs: {
             pname = "rust-nix-compile-test";
-            version = "0.1.0";
+            version = "0.2.0";
             
             src = ./.;
             
-            cargoHash = "sha256-QipW8C5W0f7yklYMMCJU8vcZ70WP5JpsxX9gcbR8AhA";
+            cargoHash = "sha256-rX1WYRp51iLozeA2hDjbQAKCxvU9kpupl2ltIhqvug0";
           };
         
         customPkgs = {
