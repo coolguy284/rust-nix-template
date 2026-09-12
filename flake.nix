@@ -28,12 +28,13 @@
           # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
           # "toString" from https://www.google.com/search?q=nix+convert+derivation+to+a+store+path+string
           copyJoin =
-            { pkgsToCombine, ... } @ derivationParams:
+            { pkgsToCombine, pkgSubdir ? "", ... } @ derivationParams:
               pkgs.stdenv.mkDerivation (
                 (removeAttrs derivationParams [ "pkgsToCombine" ])
                 // {
                   folderNames = builtins.attrNames pkgsToCombine;
                   folderPkgs = map (pkg: toString pkg) (builtins.attrValues pkgsToCombine);
+                  inherit pkgSubdir;
                   
                   dontUnpack = true;
                   
@@ -47,7 +48,7 @@
                     # https://stackoverflow.com/questions/1445452/shell-script-for-loop-syntax/1445471#1445471
                     # https://stackoverflow.com/questions/1886374/how-to-find-the-length-of-an-array-in-shell/1886483#1886483
                     for i in ''$(seq 0 ''$((''${#folderNamesArr[@]} - 1))); do
-                      cp -r ''${folderPkgsArr[i]} $out/''${folderNamesArr[i]}
+                      cp -r ''${folderPkgsArr[i]}$pkgSubdir $out/''${folderNamesArr[i]}
                     done
                   '';
                 }
@@ -67,6 +68,7 @@
             customPkgs.copyJoin {
               name = "build-out";
               pkgsToCombine = outPkgs;
+              pkgSubdir = "/bin";
             };
         };
 }
