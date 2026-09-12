@@ -27,9 +27,9 @@
         customPkgs = {
           # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
           copyJoin =
-            { paths, ... }@params:
+            { paths, ... } @ derivationParams:
               pkgs.stdenv.mkDerivation (
-                (removeAttrs params [ "paths" ])
+                (removeAttrs derivationParams [ "paths" ])
                 // {
                   pkg1 = outPkgs.x86_64-linux;
                   pkg2 = outPkgs.x86_64-windows;
