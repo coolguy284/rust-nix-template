@@ -1,3 +1,5 @@
+# Creates "build/tags/<tag name>/<architecture>" folders containing the compiled Rust program as it was at that git tag.
+
 set -euo pipefail
 
 cd "${0%/*}/.."

@@ -1,3 +1,5 @@
+# Creates "build/current/<tag name>/<architecture>" folders containing the compiled Rust program.
+
 set -euo pipefail
 
 cd "${0%/*}/.."
