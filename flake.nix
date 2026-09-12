@@ -70,5 +70,15 @@
               pkgsToCombine = outPkgs;
               pkgSubdir = "/bin";
             };
+          
+          # https://nixos-and-flakes.thiscute.world/development/intro
+          devShells."${system}".default =
+            pkgs.mkShell {
+              packages = builtins.attrValues pkgs.rustPlatform.rust;
+              
+              shellHook = ''
+                echo "Entering Rust Development Environment"
+              '';
+            };
         };
 }
