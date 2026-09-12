@@ -38,11 +38,11 @@
                   dontUnpack = true;
                   
                   installPhase = ''
-                    mkdir -p $out
-                    
                     # https://stackoverflow.com/questions/9293887/how-to-read-a-space-delimited-string-into-an-array-in-bash/9294015#9294015
                     folderNamesArr=($folderNames)
                     folderPkgsArr=($folderPkgs)
+                    
+                    mkdir -p $out
                     
                     # https://stackoverflow.com/questions/1445452/shell-script-for-loop-syntax/1445471#1445471
                     for i in `seq 0 ''$((''${#folderNamesArr[@]} - 1))`; do
