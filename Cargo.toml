@@ -4,6 +4,7 @@ version = "0.3.0"
 edition = "2024"
 
 [registry]
+# To protect against supply-chain attacks:
 global-min-publish-age = "7 days"
 
 [dependencies]
