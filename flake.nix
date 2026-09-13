@@ -1,4 +1,7 @@
 # https://nixos-and-flakes.thiscute.world/development/intro
+let
+  cargoHash = "sha256-M5R9gdFuPWzns38M0pt2dKef84ZkymzOx3vB9HdcS2w";
+in
 {
   description = "Rust Nix compilation test.";
   
@@ -25,7 +28,7 @@
               
               src = ./.;
               
-              cargoHash = "sha256-M5R9gdFuPWzns38M0pt2dKef84ZkymzOx3vB9HdcS2w";
+              inherit cargoHash;
             };
         
         customPkgs = {
