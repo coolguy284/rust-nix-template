@@ -1,0 +1,7 @@
+Can choose to follow either MIT or Unlicense; MIT made available in case
+Unlicense does not legally apply in your jurisdiction.
+
+Note:
+  Parts taken from elsewhere and thus (probably) does not follow the same
+  MIT+Unlicense as rest of repo:
+    file "flake.nix", lines 72-87
