@@ -1,2 +1,2 @@
-low prio:
-fix commented out 32 bit compilation modes
+cross-compilation using features built into rust platform
+cargo profiles support
