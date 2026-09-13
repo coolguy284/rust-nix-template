@@ -1,3 +1,3 @@
 fn main() {
-  println!("Hello world {}!", env!("CARGO_PKG_VERSION"));
+  println!("Hello world v{}!", env!("CARGO_PKG_VERSION"));
 }
