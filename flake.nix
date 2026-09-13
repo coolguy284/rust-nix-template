@@ -25,7 +25,7 @@
               
               src = ./.;
               
-              cargoHash = "sha256-rX1WYRp51iLozeA2hDjbQAKCxvU9kpupl2ltIhqvug0";
+              cargoHash = "sha256-M5R9gdFuPWzns38M0pt2dKef84ZkymzOx3vB9HdcS2w";
             };
         
         customPkgs = {
@@ -63,7 +63,9 @@
           # "pkgs.pkgsCross" from https://www.google.com/search?q=rustplatform+buildrustpackage+specify+output+platform
           # "pkgs.pkgsCross.mingwW64" from https://www.google.com/search?q=nixos+pkgscross+rust+x86_64-pc-windows-gnu
           x86_64-linux = pkgs.rustPlatform.buildRustPackage rustPackageParams;
+          #x86-linux = pkgs.pkgsCross.gnu32.rustPlatform.buildRustPackage rustPackageParams;
           x86_64-windows = pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage rustPackageParams;
+          #x86-windows = pkgs.pkgsCross.mingw32.rustPlatform.buildRustPackage rustPackageParams;
         };
       in
         {
