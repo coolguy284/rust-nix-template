@@ -11,7 +11,12 @@ buildTag(){
   tag=$1
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
-  ./scripts/build-one-tag.sh $tag || true
+  ./scripts/build-one-tag.sh $tag && true
+  exit_code=$?
+  
+  if [ "$exit_code" -ne 0 ]; then
+    final_exit_code=$exit_code
+  fi
 }
 
 gitTags=$(git tag)
