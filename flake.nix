@@ -67,7 +67,6 @@
           x86_64-linux = pkgs.rustPlatform.buildRustPackage (makeRustPackageParams {});
           x86-linux = pkgs.pkgsCross.gnu32.rustPlatform.buildRustPackage (makeRustPackageParams {});
           x86_64-windows = pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage (makeRustPackageParams {});
-          # doesnt work:
           x86-windows = pkgs.pkgsCross.mingw32.rustPlatform.buildRustPackage (makeRustPackageParams {
             # https://discourse.nixos.org/t/trying-to-cross-compile-to-i686-pc-windows-gnu/76237/18
             env.RUSTFLAGS =
