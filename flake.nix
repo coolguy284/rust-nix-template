@@ -25,7 +25,7 @@
               
               src = ./.;
               
-              cargoHash = "sha256-M5R9gdFuPWzns38M0pt2dKef84ZkymzOx3vB9HdcS2w";
+              cargoHash = "sha256-Ybt41/2tC5+mGIEnBUJWQUMekaVC3aansKBm1DRR4e8=";
             } // extraConfig;
         
         customPkgs = {
