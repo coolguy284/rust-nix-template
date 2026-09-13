@@ -32,7 +32,7 @@
           # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
           # "toString" from https://www.google.com/search?q=nix+convert+derivation+to+a+store+path+string
           copyJoin =
-            { pkgsToCombine, pkgSubdir ? "", ... } @ derivationParams:
+            { pkgsToCombine, pkgSubdir ? "", copySymlinkContents ? false, ... } @ derivationParams:
               pkgs.stdenv.mkDerivation (
                 (removeAttrs derivationParams [ "pkgsToCombine" ])
                 // {
@@ -52,7 +52,8 @@
                     # https://stackoverflow.com/questions/1445452/shell-script-for-loop-syntax/1445471#1445471
                     # https://stackoverflow.com/questions/1886374/how-to-find-the-length-of-an-array-in-shell/1886483#1886483
                     for i in ''$(seq 0 ''$((''${#folderNamesArr[@]} - 1))); do
-                      cp -r ''${folderPkgsArr[i]}$pkgSubdir $out/''${folderNamesArr[i]}
+                      # --copy-contents needed to copy the content of any symbolic links that end up in build output
+                      cp -r${if copySymlinkContents then " --copy-contents" else ""} ''${folderPkgsArr[i]}$pkgSubdir $out/''${folderNamesArr[i]}
                     done
                   '';
                 }
@@ -96,6 +97,7 @@
               name = "build";
               pkgsToCombine = outPkgs;
               pkgSubdir = "/bin";
+              copySymlinkContents = true;
             };
           
           # https://nixos-and-flakes.thiscute.world/development/intro
