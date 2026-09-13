@@ -52,8 +52,8 @@
                     # https://stackoverflow.com/questions/1445452/shell-script-for-loop-syntax/1445471#1445471
                     # https://stackoverflow.com/questions/1886374/how-to-find-the-length-of-an-array-in-shell/1886483#1886483
                     for i in ''$(seq 0 ''$((''${#folderNamesArr[@]} - 1))); do
-                      # --copy-contents needed to copy the content of any symbolic links that end up in build output
-                      cp -r${if copySymlinkContents then " --copy-contents" else ""} ''${folderPkgsArr[i]}$pkgSubdir $out/''${folderNamesArr[i]}
+                      # -L needed to copy the content of any symbolic links that end up in build output
+                      cp -r${if copySymlinkContents then " -L" else ""} ''${folderPkgsArr[i]}$pkgSubdir $out/''${folderNamesArr[i]}
                     done
                   '';
                 }
