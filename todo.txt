@@ -1,0 +1,2 @@
+low prio:
+fix commented out 32 bit compilation modes

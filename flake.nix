@@ -65,6 +65,7 @@
           x86_64-linux = pkgs.rustPlatform.buildRustPackage rustPackageParams;
           #x86-linux = pkgs.pkgsCross.gnu32.rustPlatform.buildRustPackage rustPackageParams;
           x86_64-windows = pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage rustPackageParams;
+          # doesnt work:
           #x86-windows = pkgs.pkgsCross.mingw32.rustPlatform.buildRustPackage rustPackageParams;
         };
       in
