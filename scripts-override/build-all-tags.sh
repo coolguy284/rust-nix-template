@@ -4,6 +4,11 @@ set -euo pipefail
 
 cd "${0%/*}/.."
 
+mkdir -p build/tags
+
+# Custom tag overrides:
 cp -r $(nix build git+file:.?ref=v0.1.0 --no-link --print-out-paths) build/tags/v0.1.0
 cp -r $(nix build git+file:.?ref=v0.2.0 --no-link --print-out-paths) build/tags/v0.2.0
+
+# Remaining tags can be built normally:
 ./scripts/build-all-tags.sh
