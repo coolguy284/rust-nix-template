@@ -3,4 +3,7 @@ name = "rust-nix-template"
 version = "0.3.0"
 edition = "2024"
 
+[registry]
+global-min-publish-age = "7 days"
+
 [dependencies]
