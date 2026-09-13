@@ -19,14 +19,14 @@
           let
             cargoFileContents = lib.importTOML ./Cargo.toml;
           in
-            finalAttrs: {
+            extraConfig: (finalAttrs: ({
               pname = cargoFileContents.package.name;
               version = cargoFileContents.package.version;
               
               src = ./.;
               
               cargoHash = "sha256-M5R9gdFuPWzns38M0pt2dKef84ZkymzOx3vB9HdcS2w";
-            };
+            } // extraConfig));
         
         customPkgs = {
           # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
@@ -62,11 +62,29 @@
         outPkgs = {
           # "pkgs.pkgsCross" from https://www.google.com/search?q=rustplatform+buildrustpackage+specify+output+platform
           # "pkgs.pkgsCross.mingwW64" from https://www.google.com/search?q=nixos+pkgscross+rust+x86_64-pc-windows-gnu
-          x86_64-linux = pkgs.rustPlatform.buildRustPackage rustPackageParams;
-          #x86-linux = pkgs.pkgsCross.gnu32.rustPlatform.buildRustPackage rustPackageParams;
-          x86_64-windows = pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage rustPackageParams;
+          x86_64-linux = pkgs.rustPlatform.buildRustPackage (rustPackageParams {});
+          x86-linux = pkgs.pkgsCross.gnu32.rustPlatform.buildRustPackage (rustPackageParams {});
+          x86_64-windows = pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage (rustPackageParams {});
           # doesnt work:
-          #x86-windows = pkgs.pkgsCross.mingw32.rustPlatform.buildRustPackage rustPackageParams;
+          x86-windows = pkgs.pkgsCross.mingw32.rustPlatform.buildRustPackage (rustPackageParams {
+            # https://discourse.nixos.org/t/trying-to-cross-compile-to-i686-pc-windows-gnu/76237/18
+            env.RUSTFLAGS =
+              let
+                dylibs = [
+                  pkgs.pkgsCross.mingw32.windows.pthreads
+                  pkgs.pkgsCross.mingw32.windows.mcfgthreads
+                ];
+                searchDirs = map (a: "-L ${a}/lib") dylibs;
+              in
+              builtins.concatStringsSep
+              " "
+              (
+                [
+                  "-C" "link-arg=-lmcfgthread"
+                ]
+                ++ searchDirs
+              );
+          });
         };
       in
         {
