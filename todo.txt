@@ -1,2 +1,2 @@
 low prio:
-cross-compilation using method in rust platform
+cross-compilation using method in https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/rust.section.md
