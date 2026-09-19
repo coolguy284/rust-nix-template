@@ -25,7 +25,7 @@
               
               src = ./.;
               
-              cargoHash = "sha256-Ybt41/2tC5+mGIEnBUJWQUMekaVC3aansKBm1DRR4e8=";
+              cargoHash = nixpkgs.lib.strings.removeSuffix "\n" (builtins.readFile ./cargo-hash.txt);
             } // extraConfig;
         
         customPkgs = {
