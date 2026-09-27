@@ -11,7 +11,7 @@ buildTag(){
   tag=$1
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
-  ./scripts-override/lib/build-one-old-tag.sh $tag && true
+  ./scripts-override/build-one-tag.sh $tag && true
   exit_code=$?
   
   if [ "$exit_code" -ne 0 ]; then

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-cd "${0%/*}/.."
+cd "${0%/*}/../.."
 
 tag=$1
 
