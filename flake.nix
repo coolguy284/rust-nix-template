@@ -21,7 +21,7 @@
             
             src = ./.;
             
-            cargoHash = "sha256-QipW8C5W0f7yklYMMCJU8vcZ70WP5JpsxX9gcbR8AhA";
+            cargoHash = "sha256-C6Hpf7kD0loLvmf7LiOMv4rdJkpM4foMPx2i6tOSQFU=";
           };
         
         customPkgs = {
