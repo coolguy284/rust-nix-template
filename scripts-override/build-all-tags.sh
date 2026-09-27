@@ -10,6 +10,14 @@ final_exit_code=0
 buildTag(){
   tag=$1
   
+  # https://stackoverflow.com/questions/22861580/bash-script-check-if-a-file-contains-a-specific-line/69022922#69022922
+  if
+    [ -f "./scripts-override/lib/tag-ignore-list.txt" ] &&
+    grep -Fxq "$tag" "./scripts-override/lib/tag-ignore-list.txt"
+  then
+    return
+  fi
+  
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
   ./scripts-override/build-one-tag.sh $tag && true
   exit_code=$?
