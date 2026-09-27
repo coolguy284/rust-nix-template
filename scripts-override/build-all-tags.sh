@@ -7,7 +7,7 @@ cd "${0%/*}/.."
 final_exit_code=0
 
 # https://www.geeksforgeeks.org/linux-unix/bash-scripting-functions/
-buildOldTag(){
+buildTag(){
   tag=$1
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
@@ -19,11 +19,13 @@ buildOldTag(){
   fi
 }
 
+gitTags=$(git tag)
+
 mkdir -p build/tags
 
-# Custom tag overrides:
-buildOldTag v0.1.0-hash-fix
-buildOldTag v0.2.0-hash-fix
+# https://stackoverflow.com/questions/59838/how-do-i-check-if-a-directory-exists-or-not-in-a-bash-shell-script/59839#59839
+for tag in $gitTags; do
+  buildTag $tag
+done
 
-# Remaining tags can be built normally:
-./scripts/build-all-tags.sh
+exit $final_exit_code
