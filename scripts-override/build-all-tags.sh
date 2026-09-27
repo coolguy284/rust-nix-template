@@ -22,8 +22,8 @@ buildOldTag(){
 mkdir -p build/tags
 
 # Custom tag overrides:
-buildOldTag v0.1.0
-buildOldTag v0.2.0
+buildOldTag v0.1.0-hash-fix
+buildOldTag v0.2.0-hash-fix
 
 # Remaining tags can be built normally:
 ./scripts/build-all-tags.sh
