@@ -23,7 +23,6 @@ gitTags=$(git tag)
 
 mkdir -p build/tags
 
-# https://stackoverflow.com/questions/59838/how-do-i-check-if-a-directory-exists-or-not-in-a-bash-shell-script/59839#59839
 for tag in $gitTags; do
   buildTag $tag
 done
