@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-cd "${0%/*}/../.."
+cd "${0%/*}/.."
 
 tag=$1
 
@@ -18,14 +18,14 @@ if [ ! -d "build/tags/$tag" ]; then
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786104#786104
   # https://stackoverflow.com/questions/15541321/set-a-parent-shells-variable-from-a-subshell/15543655#15543655
-  { nix build git+file:.?ref=$tag --no-link && build_result=$?; } || build_result=$?
+  { nix build git+file:.?ref=$tag#build --no-link && build_result=$?; } || build_result=$?
   
   if [ $build_result -ne 0 ]; then
     echo Error building version $tag
     exit $build_result
   fi
   
-  store_path=$(nix build git+file:.?ref=$tag --no-link --print-out-paths)
+  store_path=$(nix build git+file:.?ref=$tag#build --no-link --print-out-paths)
   
   cp -r $store_path build/tags/$tag
 fi

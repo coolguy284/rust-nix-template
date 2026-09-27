@@ -9,5 +9,5 @@ tag=$1
 if [ "$tag" -eq "v0.1.0-hash-fix" -or "$tag" -eq "v0.2.0-hash-fix" ]; then
   ./scripts-override/lib/build-one-old-tag.sh $tag
 else
-  ./scripts/build-one-tag.sh $tag
+  ./scripts-override/lib/build-one-tag.sh $tag
 fi
