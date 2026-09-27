@@ -11,7 +11,10 @@ if [ ! -d "build/tags/$tag" ]; then
   echo Building version $tag...
   
   # https://stackoverflow.com/questions/22861580/bash-script-check-if-a-file-contains-a-specific-line/69022922#69022922
-  if grep -Fx "$tag" "./scripts-override/lib/tag-ignore-list.txt"; then
+  if
+    [ -f "./scripts-override/lib/tag-ignore-list.txt" ] &&
+    grep -Fxq "$tag" "./scripts-override/lib/tag-ignore-list.txt"
+  then
     echo Error: tag $tag is in ignore list
     exit 1
   fi
