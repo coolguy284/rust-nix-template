@@ -25,7 +25,9 @@
               
               src = ./.;
               
-              cargoHash = nixpkgs.lib.strings.removeSuffix "\n" (builtins.readFile ./cargo-hash.txt);
+              cargoLock = {
+                lockFile = ./Cargo.lock;
+              };
             } // extraConfig;
         
         customPkgs = {
