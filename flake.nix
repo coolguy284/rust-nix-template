@@ -102,6 +102,18 @@
               copySymlinkContents = true;
             };
           
+          # Allowed system values from:
+          #   https://github.com/NixOS/nixpkgs/issues/55785
+          #   https://github.com/NixOS/nix/blob/4ae6e849015fb269414c1544e815aba75085cf7b/release.nix#L4
+          #   Allowed values: [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" ]
+          packages."${system}".default =
+            if system == "x86_64-linux" then
+              outPkgs.x86_64-linux
+            else if system == "i686-linux" then
+              outPkgs.x86-linux
+            else
+              throw "unsupported system for package: ${system}";
+          
           # https://nixos-and-flakes.thiscute.world/development/intro
           devShells."${system}".default =
             pkgs.mkShell {
