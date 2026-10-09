@@ -4,4 +4,4 @@ set -euo pipefail
 
 cd "${0%/*}/.."
 
-nix flake update
+nix --extra-experimental-features 'nix-command flakes' flake update

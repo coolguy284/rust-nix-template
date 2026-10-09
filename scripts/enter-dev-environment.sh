@@ -5,4 +5,4 @@ set -euo pipefail
 
 cd "${0%/*}/.."
 
-nix develop
+nix --extra-experimental-features 'nix-command flakes' develop
