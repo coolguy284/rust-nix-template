@@ -15,20 +15,19 @@
         # "import nixpkgs { inherit system; }" from https://www.google.com/search?q=nixos+attribute+rustplatform+missing+on+nixpkgs+flake+input
         pkgs = (import nixpkgs { inherit system; }).pkgs;
         
+        cargoFileContents = lib.importTOML ./Cargo.toml;
+        
         makeRustPackageParams =
-          let
-            cargoFileContents = lib.importTOML ./Cargo.toml;
-          in
-            extraConfig: finalAttrs: {
-              pname = cargoFileContents.package.name;
-              version = cargoFileContents.package.version;
-              
-              src = ./.;
-              
-              cargoLock = {
-                lockFile = ./Cargo.lock;
-              };
-            } // extraConfig;
+          extraConfig: finalAttrs: {
+            pname = cargoFileContents.package.name;
+            version = cargoFileContents.package.version;
+            
+            src = ./.;
+            
+            cargoLock = {
+              lockFile = ./Cargo.lock;
+            };
+          } // extraConfig;
         
         customPkgs = {
           # https://www.google.com/search?q=nix+derivation+that+copies+other+derivations+into+itself
@@ -113,6 +112,18 @@
               outPkgs.x86-linux
             else
               throw "unsupported system for package: ${system}";
+          
+          apps."${system}".default = {
+            type = "app";
+            program = "${
+              if system == "x86_64-linux" then
+                outPkgs.x86_64-linux
+              else if system == "i686-linux" then
+                outPkgs.x86-linux
+              else
+                throw "unsupported system for package: ${system}"
+            }/bin/${cargoFileContents.package.name}";
+          };
           
           # https://nixos-and-flakes.thiscute.world/development/intro
           devShells."${system}".default =
