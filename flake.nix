@@ -92,7 +92,7 @@
         {
           packages."${system}" = {
             # "pkgs.symlinkJoin" from https://www.google.com/search?q=nix+combine+multiple+derivations+into+one+big+output
-            build =
+            build-all-platforms =
               customPkgs.copyJoin {
                 name = "build";
                 pkgsToCombine = outPkgs;
