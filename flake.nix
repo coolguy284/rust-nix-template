@@ -9,11 +9,11 @@
   outputs =
     { self, nixpkgs, ... }:
       let
-        system = "x86_64-linux";
+        buildAllPlatformsNativeSystem = "x86_64-linux";
         
         lib = nixpkgs.lib;
         # "import nixpkgs { inherit system; }" from https://www.google.com/search?q=nixos+attribute+rustplatform+missing+on+nixpkgs+flake+input
-        pkgs = (import nixpkgs { inherit system; }).pkgs;
+        buildAllPlatformsNativePkgs = (import nixpkgs { inherit buildAllPlatformsNativeSystem; }).pkgs;
         
         # Allowed system values from:
         #   https://github.com/NixOS/nixpkgs/issues/55785
@@ -53,7 +53,7 @@
           # "toString" from https://www.google.com/search?q=nix+convert+derivation+to+a+store+path+string
           copyJoin =
             { pkgsToCombine, pkgSubdir ? "", copySymlinkContents ? false, ... } @ derivationParams:
-              pkgs.stdenv.mkDerivation (
+              buildAllPlatformsNativePkgs.stdenv.mkDerivation (
                 (removeAttrs derivationParams [ "pkgsToCombine" ])
                 // {
                   folderNames = builtins.attrNames pkgsToCombine;
@@ -84,16 +84,16 @@
         outPkgs = {
           # "pkgs.pkgsCross" from https://www.google.com/search?q=rustplatform+buildrustpackage+specify+output+platform
           # "pkgs.pkgsCross.mingwW64" from https://www.google.com/search?q=nixos+pkgscross+rust+x86_64-pc-windows-gnu
-          x86_64-linux = pkgs.rustPlatform.buildRustPackage (makeRustPackageParams {});
-          x86-linux = pkgs.pkgsCross.gnu32.rustPlatform.buildRustPackage (makeRustPackageParams {});
-          x86_64-windows = pkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage (makeRustPackageParams {});
-          x86-windows = pkgs.pkgsCross.mingw32.rustPlatform.buildRustPackage (makeRustPackageParams {
+          x86_64-linux = buildAllPlatformsNativePkgs.rustPlatform.buildRustPackage (makeRustPackageParams {});
+          x86-linux = buildAllPlatformsNativePkgs.pkgsCross.gnu32.rustPlatform.buildRustPackage (makeRustPackageParams {});
+          x86_64-windows = buildAllPlatformsNativePkgs.pkgsCross.mingwW64.rustPlatform.buildRustPackage (makeRustPackageParams {});
+          x86-windows = buildAllPlatformsNativePkgs.pkgsCross.mingw32.rustPlatform.buildRustPackage (makeRustPackageParams {
             # https://discourse.nixos.org/t/trying-to-cross-compile-to-i686-pc-windows-gnu/76237/18
             env.RUSTFLAGS =
               let
                 dylibs = [
-                  pkgs.pkgsCross.mingw32.windows.pthreads
-                  pkgs.pkgsCross.mingw32.windows.mcfgthreads
+                  buildAllPlatformsNativePkgs.pkgsCross.mingw32.windows.pthreads
+                  buildAllPlatformsNativePkgs.pkgsCross.mingw32.windows.mcfgthreads
                 ];
                 searchDirs = map (a: "-L ${a}/lib") dylibs;
               in
@@ -107,38 +107,40 @@
               );
           });
         };
+        
+        # "x86_64-linux" is a misnomer, if nix is running on other systems than x86_64-linux,
+        # then this will reference the package build output for that system instead
+        nativeOutPkgs = outPkgs.x86_64-linux;
       in
         {
-          packages."${system}" = {
-            # "pkgs.symlinkJoin" from https://www.google.com/search?q=nix+combine+multiple+derivations+into+one+big+output
-            build-all-platforms =
-              customPkgs.copyJoin {
-                name = "build";
-                pkgsToCombine = outPkgs;
-                pkgSubdir = "/bin";
-                copySymlinkContents = true;
-              };
-            
-            default =
-              if system == "x86_64-linux" then
-                outPkgs.x86_64-linux
-              else if system == "i686-linux" then
-                outPkgs.x86-linux
-              else
-                throw "unsupported system for package: ${system}";
-          };
+          packages = forAllPlatforms (
+            buildSystem:
+              {
+                # "pkgs.symlinkJoin" from https://www.google.com/search?q=nix+combine+multiple+derivations+into+one+big+output
+                build-all-platforms =
+                  if buildSystem == buildAllPlatformsNativeSystem then
+                    customPkgs.copyJoin {
+                      name = "build";
+                      pkgsToCombine = outPkgs;
+                      pkgSubdir = "/bin";
+                      copySymlinkContents = true;
+                    }
+                  else
+                    throw "full cross platform build intended for system ${buildAllPlatformsNativeSystem} but this flake output is for system ${buildSystem}";
+                
+                default = nativeOutPkgs;
+              }
+          );
           
-          apps."${system}".default = {
-            type = "app";
-            program = "${
-              if system == "x86_64-linux" then
-                outPkgs.x86_64-linux
-              else if system == "i686-linux" then
-                outPkgs.x86-linux
-              else
-                throw "unsupported system for package: ${system}"
-            }/bin/${cargoFileContents.package.name}";
-          };
+          apps = forAllPlatforms (
+            buildSystem:
+              {
+                default = {
+                  type = "app";
+                  program = "${nativeOutPkgs}/bin/${cargoFileContents.package.name}";
+                };
+              }
+          );
           
           # https://nixos-and-flakes.thiscute.world/development/intro
           devShells."${system}".default =
