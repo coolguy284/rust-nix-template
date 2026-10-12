@@ -15,6 +15,25 @@
         # "import nixpkgs { inherit system; }" from https://www.google.com/search?q=nixos+attribute+rustplatform+missing+on+nixpkgs+flake+input
         pkgs = (import nixpkgs { inherit system; }).pkgs;
         
+        # Allowed system values from:
+        #   https://github.com/NixOS/nixpkgs/issues/55785
+        #   https://github.com/NixOS/nix/blob/4ae6e849015fb269414c1544e815aba75085cf7b/release.nix#L4
+        #   Allowed values: [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" ]
+        forAllPlatforms =
+          makePlatformCfg:
+            listToAttrs
+              (
+                map
+                (
+                  platform:
+                    {
+                      name = platform;
+                      value = makePlatformCfg platform;
+                    }
+                )
+                [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" ]
+              );
+        
         cargoFileContents = lib.importTOML ./Cargo.toml;
         
         makeRustPackageParams =
@@ -100,10 +119,6 @@
                 copySymlinkContents = true;
               };
             
-            # Allowed system values from:
-            #   https://github.com/NixOS/nixpkgs/issues/55785
-            #   https://github.com/NixOS/nix/blob/4ae6e849015fb269414c1544e815aba75085cf7b/release.nix#L4
-            #   Allowed values: [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" ]
             default =
               if system == "x86_64-linux" then
                 outPkgs.x86_64-linux
