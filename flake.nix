@@ -14,7 +14,9 @@
         lib = nixpkgs.lib;
         
         # "import nixpkgs { inherit system; }" from https://www.google.com/search?q=nixos+attribute+rustplatform+missing+on+nixpkgs+flake+input
-        makePlatformPkgs = system: (import nixpkgs { inherit buildAllPlatformsNativeSystem; }).pkgs;
+        makePlatformPkgs =
+          system:
+            (import nixpkgs { system = buildAllPlatformsNativeSystem; }).pkgs;
         
         buildAllPlatformsNativePkgs = makePlatformPkgs buildAllPlatformsNativeSystem;
         
@@ -166,7 +168,7 @@
                       #];
                       
                       shellHook = ''
-                        echo "Entering Rust development environment for platform"'"'"${buildSystem}"'"'
+                        echo "Entering Rust development environment for platform "'"'"${buildSystem}"'"'
                       '';
                     };
                 }
