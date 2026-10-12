@@ -12,8 +12,11 @@
         buildAllPlatformsNativeSystem = "x86_64-linux";
         
         lib = nixpkgs.lib;
+        
         # "import nixpkgs { inherit system; }" from https://www.google.com/search?q=nixos+attribute+rustplatform+missing+on+nixpkgs+flake+input
-        buildAllPlatformsNativePkgs = (import nixpkgs { inherit buildAllPlatformsNativeSystem; }).pkgs;
+        makePlatformPkgs = system: (import nixpkgs { inherit buildAllPlatformsNativeSystem; }).pkgs;
+        
+        buildAllPlatformsNativePkgs = makePlatformPkgs buildAllPlatformsNativeSystem;
         
         # Allowed system values from:
         #   https://github.com/NixOS/nixpkgs/issues/55785
@@ -108,9 +111,10 @@
           });
         };
         
-        # "x86_64-linux" is a misnomer, if nix is running on other systems than x86_64-linux,
-        # then this will reference the package build output for that system instead
-        nativeOutPkgs = outPkgs.x86_64-linux;
+        makeNativeOutPkgs =
+          system:
+            (makePlatformPkgs system)
+              .pkgs.rustPlatform.buildRustPackage (makeRustPackageParams {});
       in
         {
           packages = forAllPlatforms (
@@ -128,7 +132,7 @@
                   else
                     throw "full cross platform build intended for system ${buildAllPlatformsNativeSystem} but this flake output is for system ${buildSystem}";
                 
-                default = nativeOutPkgs;
+                default = makeNativeOutPkgs buildSystem;
               }
           );
           
@@ -137,27 +141,32 @@
               {
                 default = {
                   type = "app";
-                  program = "${nativeOutPkgs}/bin/${cargoFileContents.package.name}";
+                  program = "${makeNativeOutPkgs buildSystem}/bin/${cargoFileContents.package.name}";
                 };
               }
           );
           
           # https://nixos-and-flakes.thiscute.world/development/intro
-          devShells."${system}".default =
-            pkgs.mkShell {
-              # The following two methods of getting "rustc" and "cargo" (packages or inputsFrom)
-              # seem roughly equivalent, so  packages is chosen as it doesnt depend on choice of
-              # build outputs
-              
-              packages = builtins.attrValues pkgs.rustPlatform.rust;
-              
-              #inputsFrom = [
-              #  outPkgs.x86_64-linux
-              #];
-              
-              shellHook = ''
-                echo "Entering Rust Development Environment"
-              '';
-            };
+          devShells = forAllPlatforms (
+            buildSystem:
+              {
+                default =
+                  pkgs.mkShell {
+                    # The following two methods of getting "rustc" and "cargo" (packages or inputsFrom)
+                    # seem roughly equivalent, so  packages is chosen as it doesnt depend on choice of
+                    # build outputs
+                    
+                    packages = builtins.attrValues (makePlatformPkgs buildSystem).rustPlatform.rust;
+                    
+                    #inputsFrom = [
+                    #  outPkgs.x86_64-linux
+                    #];
+                    
+                    shellHook = ''
+                      echo "Entering Rust development environment for platform"'"'"${buildSystem}"'"'
+                    '';
+                  };
+              }
+          );
         };
 }
