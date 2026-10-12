@@ -24,7 +24,7 @@
         #   Allowed values: [ "x86_64-linux" "i686-linux" "x86_64-darwin" "aarch64-linux" ]
         forAllPlatforms =
           makePlatformCfg:
-            listToAttrs
+            builtins.listToAttrs
               (
                 map
                 (
@@ -149,24 +149,27 @@
           # https://nixos-and-flakes.thiscute.world/development/intro
           devShells = forAllPlatforms (
             buildSystem:
-              {
-                default =
-                  pkgs.mkShell {
-                    # The following two methods of getting "rustc" and "cargo" (packages or inputsFrom)
-                    # seem roughly equivalent, so  packages is chosen as it doesnt depend on choice of
-                    # build outputs
-                    
-                    packages = builtins.attrValues (makePlatformPkgs buildSystem).rustPlatform.rust;
-                    
-                    #inputsFrom = [
-                    #  outPkgs.x86_64-linux
-                    #];
-                    
-                    shellHook = ''
-                      echo "Entering Rust development environment for platform"'"'"${buildSystem}"'"'
-                    '';
-                  };
-              }
+              let
+                pkgs = makePlatformPkgs buildSystem;
+              in
+                {
+                  default =
+                    pkgs.mkShell {
+                      # The following two methods of getting "rustc" and "cargo" (packages or inputsFrom)
+                      # seem roughly equivalent, so  packages is chosen as it doesnt depend on choice of
+                      # build outputs
+                      
+                      packages = builtins.attrValues pkgs.rustPlatform.rust;
+                      
+                      #inputsFrom = [
+                      #  outPkgs.x86_64-linux
+                      #];
+                      
+                      shellHook = ''
+                        echo "Entering Rust development environment for platform"'"'"${buildSystem}"'"'
+                      '';
+                    };
+                }
           );
         };
 }
