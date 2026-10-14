@@ -114,9 +114,9 @@
         };
         
         makeNativeOutPkgs =
-          system:
+          system: params:
             (makePlatformPkgs system)
-              .pkgs.rustPlatform.buildRustPackage (makeRustPackageParams {});
+              .pkgs.rustPlatform.buildRustPackage (makeRustPackageParams params);
       in
         {
           packages = forAllPlatforms (
@@ -134,7 +134,11 @@
                   else
                     throw "full cross platform build intended for system ${buildAllPlatformsNativeSystem} but this flake output is for system ${buildSystem}";
                 
-                default = makeNativeOutPkgs buildSystem;
+                default = makeNativeOutPkgs buildSystem {};
+                
+                test = makeNativeOutPkgs buildSystem {
+                  buildType = "test";
+                };
               }
           );
           
@@ -143,9 +147,22 @@
               {
                 default = {
                   type = "app";
-                  program = "${makeNativeOutPkgs buildSystem}/bin/${cargoFileContents.package.name}";
+                  program = "${makeNativeOutPkgs buildSystem {}}/bin/${cargoFileContents.package.name}";
                 };
               }
+          );
+          
+          check = forAllPlatforms (
+            buildSystem:
+              let
+                pkgs = makePlatformPkgs buildSystem;
+              in
+                {
+                  default =
+                    makeNativeOutPkgs buildSystem {
+                      buildType = "test";
+                    };
+                }
           );
           
           # https://nixos-and-flakes.thiscute.world/development/intro
@@ -158,7 +175,7 @@
                   default =
                     pkgs.mkShell {
                       # The following two methods of getting "rustc" and "cargo" (packages or inputsFrom)
-                      # seem roughly equivalent, so  packages is chosen as it doesnt depend on choice of
+                      # seem roughly equivalent, so packages is chosen as it doesnt depend on choice of
                       # build outputs
                       
                       packages = builtins.attrValues pkgs.rustPlatform.rust;
