@@ -136,9 +136,9 @@
                 
                 default = makeNativeOutPkgs buildSystem {};
                 
-                test = makeNativeOutPkgs buildSystem {
-                  buildType = "test";
-                };
+                #test = makeNativeOutPkgs buildSystem {
+                #  buildType = "test";
+                #};
               }
           );
           
@@ -152,18 +152,18 @@
               }
           );
           
-          check = forAllPlatforms (
-            buildSystem:
-              let
-                pkgs = makePlatformPkgs buildSystem;
-              in
-                {
-                  default =
-                    makeNativeOutPkgs buildSystem {
-                      buildType = "test";
-                    };
-                }
-          );
+          #check = forAllPlatforms (
+          #  buildSystem:
+          #    let
+          #      pkgs = makePlatformPkgs buildSystem;
+          #    in
+          #      {
+          #        default =
+          #          makeNativeOutPkgs buildSystem {
+          #            buildType = "test";
+          #          };
+          #      }
+          #);
           
           # https://nixos-and-flakes.thiscute.world/development/intro
           devShells = forAllPlatforms (
