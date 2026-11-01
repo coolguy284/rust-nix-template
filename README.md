@@ -9,7 +9,6 @@ See `scripts` folder for usage scripts. To create a new project, copy the follow
 - `scripts`
 - `src`
 - `.gitignore`
-- `cargo-hash.txt`
 - `Cargo.lock`
 - `Cargo.toml`
 - `flake.lock`
