@@ -1,0 +1,3 @@
+[registry]
+# To protect against supply-chain attacks:
+global-min-publish-age = "7 days"
