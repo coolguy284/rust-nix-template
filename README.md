@@ -5,6 +5,7 @@ This repo provides a template nix flake configuration to compile a rust project 
 ## Usage
 
 See `scripts` folder for usage scripts. To create a new project, copy the following items:
+- `.cargo`
 - `.vscode`
 - `scripts`
 - `src`
