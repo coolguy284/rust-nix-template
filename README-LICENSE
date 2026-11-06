@@ -5,3 +5,4 @@ Note:
   Parts taken from elsewhere and thus (probably) does not follow the same
   MIT+Unlicense as rest of repo:
     file "flake.nix", contents of variable declaration "env.RUSTFLAGS" (the variable declaration, the equals, and the part after)
+    file "README.md", contents of "Installation as a Nix Flake", "flake.nix" example, only the "outputs" section in that example (nothing else in "flake.nix" example or "Installation as a Nix Flake" section)
