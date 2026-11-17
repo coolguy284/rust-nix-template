@@ -1,11 +1,20 @@
 low prio:
 nix check and nix fmt flake outputs
 store result symlink from builds somewhere
-  scripts/build-normal-one-tag.sh options:
-    --no-link
-    --local-link (default)
-      creates symlink at build/symlinks/current or build/symlinks/tag/<tag name>
-    --home-link
-      creates symlink at ~/.cache/git-nix-symlinks/<repo author>/<repo name>/current or ~/.cache/git-nix-symlinks/<repo author>/<repo name>/tag/<tag name>
-    --link <location>
+  script options:
+  puts link at:
+    <path>/current-normal
+    <path>/current-github
+    <path>/tags-normal/<tag name>
+    <path>/tags-github/<tag name>
+  --no-link
+  --local-link (default)
+    path is build/symlinks
+  --home-link
+    path is ~/.cache/git-nix-symlinks/<repo author>/<repo name>
+  --custom-path-link <path>
+  --custom-link <location>
+    raw link location with nothing added to it
+
+probably not doing:
 cross-compilation using method in https://github.com/NixOS/nixpkgs/blob/master/doc/languages-frameworks/rust.section.md
