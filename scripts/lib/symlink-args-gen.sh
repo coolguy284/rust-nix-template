@@ -42,13 +42,21 @@ linkParse(){
   tagName=$3
   cliArgs=${*:4}
   
-  if [ "${#cliArgs[@]}" -eq 0 ]; then
+  if [ "${#cliArgs[@]}" -eq 0 ] || [ "${cliArgs[0]}" == "--local-link" ]; then
     # local link (default)
     return "--out-link" "build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
-  else if [ "${cliArgs[0]}" == "--local-link" ]; then
-    # local link
-    return "--out-link" "build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
-  # TODO: home, custom path, custom link types
+  else if [ "${cliArgs[0]}" == "--home-link" ]; then
+    # home link
+    return "--out-link" "~/.cache/git-nix-symlinks/coolguy284/rust-nix-template/build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
+  else if [ "${cliArgs[0]}" == "--custom-path-link" ]; then
+    # custom path link
+    return "--out-link" "${cliArgs[1]}/$(getSubPath $mode $buildOutType $tagName)"
+  else if [ "${cliArgs[0]}" == "--custom-link" ]; then
+    # custom link
+    return "--out-link" "${cliArgs[1]}"
+  else if [ "${cliArgs[0]}" == "--no-link" ]; then
+    # no link
+    return "--no-link"
   fi
 }
 
