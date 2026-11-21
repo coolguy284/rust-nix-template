@@ -51,11 +51,11 @@ buildTag(){
   fi
 }
 
-gitTags=$(git tag)
+git_tags=$(git tag)
 
 mkdir -p build/tags-github-releases
 
-for tag in $gitTags; do
+for tag in $git_tags; do
   buildTag $tag $*
 done
 
