@@ -21,7 +21,11 @@
 
 set -euo pipefail
 
+origCwd=$(pwd)
+
 cd "${0%/*}/.."
+
+repoRoot=$(pwd)
 
 final_exit_code=0
 
@@ -39,7 +43,7 @@ buildTag(){
   fi
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
-  ./scripts/build-github-one-tag.sh $tag $options && true
+  (cd $origCwd && "$repoRoot./scripts/build-github-one-tag.sh" $tag $options) && true
   exit_code=$?
   
   if [ "$exit_code" -ne 0 ]; then
