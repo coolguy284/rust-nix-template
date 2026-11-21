@@ -43,7 +43,7 @@ buildTag(){
   fi
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
-  (cd $origCwd && "$repoRoot./scripts-override/build-normal-one-tag.sh" $tag $options) && true
+  (cd $origCwd && "$repoRoot/scripts-override/build-normal-one-tag.sh" $tag $options) && true
   exit_code=$?
   
   if [ "$exit_code" -ne 0 ]; then
