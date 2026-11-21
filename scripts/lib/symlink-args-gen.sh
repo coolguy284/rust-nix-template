@@ -1,3 +1,5 @@
+. "${0%/*}/constants.sh"
+
 getSubPath(){
   # "normal" or "github"
   mode=$1
@@ -44,10 +46,10 @@ linkParse(){
   
   if [ "${#cliArgs[@]}" -eq 0 ] || [ "${cliArgs[0]}" == "--local-link" ]; then
     # local link (default)
-    return "--out-link" "build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
+    return "--out-link" "./build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
   else if [ "${cliArgs[0]}" == "--home-link" ]; then
     # home link
-    return "--out-link" "~/.cache/git-nix-symlinks/coolguy284/rust-nix-template/build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
+    return "--out-link" "~/.cache/git-nix-symlinks/$REPO_PATH/build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
   else if [ "${cliArgs[0]}" == "--custom-path-link" ]; then
     # custom path link
     return "--out-link" "${cliArgs[1]}/$(getSubPath $mode $buildOutType $tagName)"

@@ -16,11 +16,32 @@ See `scripts` folder for usage scripts. To create a new project, copy the follow
 - `flake.nix`
 - `rustfmt.toml`
 
+Update `scripts/lib/constants.sh` REPO_PATH to GitHub repository path of new repository (used for the --home-path option on the scripts).
+
 The "Building" and "Installation as a Nix Flake" are also applicable and can be copied to the new project `README.md`.
 
 ## Building
 
 To build, install the Nix package manager, and run the appropriate "build-" script in the scripts folder.
+
+The build scripts take extra arguments to specify the nix build output link paths:
+
+```
+options:
+  puts link at:
+    <path>/current-normal
+    <path>/current-github
+    <path>/tags-normal/<tag name>
+    <path>/tags-github/<tag name>
+  --no-link
+  --local-link (default)
+    path is build/symlinks
+  --home-link
+    path is ~/.cache/git-nix-symlinks/<repo author>/<repo name>
+  --custom-path-link <path>
+  --custom-link <location>
+    raw link location with nothing added to it
+```
 
 ## Installation as a Nix Flake
 
