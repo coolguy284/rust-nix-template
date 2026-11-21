@@ -21,15 +21,15 @@
 
 set -euo pipefail
 
-cd "${0%/*}/.."
+repoPath="${0%/*}/.."
 
 tag=$1
 options=${*:1}
 
 if [ "$tag" = "v0.1.0-hash-fix" ] || [ "$tag" = "v0.2.0-hash-fix" ]; then
-  ./scripts-override/lib/build-one-old-tag.sh $tag $options
+  "$repoPath/scripts-override/lib/build-one-old-tag.sh" $tag $options
 else if [ "$tag" = "v0.3.0" ] || [ "$tag" = "v0.4.0" ]; then
-  ./scripts-override/lib/build-one-old2-tag.sh $tag $options
+  "$repoPath/scripts-override/lib/build-one-old2-tag.sh" $tag $options
 else
-  ./scripts-override/lib/build-one-tag.sh $tag $options
+  "$repoPath/scripts-override/lib/build-one-tag.sh" $tag $options
 fi
