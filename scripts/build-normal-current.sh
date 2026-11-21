@@ -6,7 +6,7 @@ cd "${0%/*}/.."
 
 options=$*
 
-store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-all-platforms $(./scripts/lib/link-parse.sh normal current "" $options) --print-out-paths)
+store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-all-platforms $(./scripts/lib/symlink-args-gen.sh normal current "" $options) --print-out-paths)
 
 mkdir -p build
 

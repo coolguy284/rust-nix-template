@@ -6,7 +6,7 @@ cd "${0%/*}/.."
 
 options=$*
 
-store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-github-releases $(./scripts/lib/link-parse.sh github current "" $options) --print-out-paths)
+store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-github-releases $(./scripts/lib/symlink-args-gen.sh github current "" $options) --print-out-paths)
 
 mkdir -p build
 

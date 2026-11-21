@@ -22,14 +22,14 @@ if [ ! -d "build/tags-github-releases/$tag" ]; then
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786104#786104
   # https://stackoverflow.com/questions/15541321/set-a-parent-shells-variable-from-a-subshell/15543655#15543655
-  { nix --extra-experimental-features 'nix-command flakes' build git+file:.?ref=$tag#build-github-releases $(./scripts/lib/link-parse.sh github tag $tag $options) && build_result=$?; } || build_result=$?
+  { nix --extra-experimental-features 'nix-command flakes' build git+file:.?ref=$tag#build-github-releases $(./scripts/lib/symlink-args-gen.sh github tag $tag $options) && build_result=$?; } || build_result=$?
   
   if [ $build_result -ne 0 ]; then
     echo Error building version $tag
     exit $build_result
   fi
   
-  store_path=$(nix --extra-experimental-features 'nix-command flakes' build git+file:.?ref=$tag#build-github-releases $(./scripts/lib/link-parse.sh github tag $tag $options) --print-out-paths)
+  store_path=$(nix --extra-experimental-features 'nix-command flakes' build git+file:.?ref=$tag#build-github-releases $(./scripts/lib/symlink-args-gen.sh github tag $tag $options) --print-out-paths)
   
   cp -r $store_path build/tags-github-releases/$tag
 fi
