@@ -46,15 +46,18 @@ linkParse(){
   
   if [ "${#cliArgs[@]}" -eq 0 ] || [ "${cliArgs[0]}" == "--local-link" ]; then
     # local link (default)
+    # TODO
     return "--out-link" "./build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
   else if [ "${cliArgs[0]}" == "--home-link" ]; then
     # home link
     return "--out-link" "~/.cache/git-nix-symlinks/$REPO_PATH/build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
   else if [ "${cliArgs[0]}" == "--custom-path-link" ]; then
     # custom path link
+    # TODO
     return "--out-link" "${cliArgs[1]}/$(getSubPath $mode $buildOutType $tagName)"
   else if [ "${cliArgs[0]}" == "--custom-link" ]; then
     # custom link
+    # TODO
     return "--out-link" "${cliArgs[1]}"
   else if [ "${cliArgs[0]}" == "--no-link" ]; then
     # no link
