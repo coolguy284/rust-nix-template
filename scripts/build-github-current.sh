@@ -4,8 +4,9 @@ set -euo pipefail
 
 cd "${0%/*}/.."
 
-#store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-github-releases --out-link "./build/symlinks/current" --print-out-paths)
-store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-github-releases --no-link --print-out-paths)
+options=$*
+
+store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-github-releases $(./scripts/lib/link-parse.sh github current "" $options) --print-out-paths)
 
 mkdir -p build
 

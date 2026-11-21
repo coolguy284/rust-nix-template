@@ -48,11 +48,8 @@ linkParse(){
   else if [ "${cliArgs[0]}" == "--local-link" ]; then
     # local link
     return "--out-link" "build/symlinks/$(getSubPath $mode $buildOutType $tagName)"
+  # TODO: home, custom path, custom link types
   fi
-  
-  echo $mode
-  echo $tagName
-  echo $cliArgs
 }
 
 linkParse $*
