@@ -21,19 +21,19 @@
 
 set -euo pipefail
 
-origCwd=$(pwd)
+orig_cwd=$(pwd)
 
 cd "${0%/*}/.."
 
-repoRoot=$(pwd)
+repo_root=$(pwd)
 
 options=$*
 
-cd $origCwd
+cd $orig_cwd
 
-store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-github-releases $("$repoRoot/scripts/lib/symlink-args-gen.sh" $origCwd $repoRoot github current "" $options) --print-out-paths)
+store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-github-releases $("$repo_root/scripts/lib/symlink-args-gen.sh" $orig_cwd $repo_root github current "" $options) --print-out-paths)
 
-cd $repoRoot
+cd $repo_root
 
 mkdir -p build
 
