@@ -9,6 +9,7 @@ final_exit_code=0
 # https://www.geeksforgeeks.org/linux-unix/bash-scripting-functions/
 buildTag(){
   tag=$1
+  options=${*:1}
   
   # https://stackoverflow.com/questions/22861580/bash-script-check-if-a-file-contains-a-specific-line/69022922#69022922
   if
@@ -19,7 +20,7 @@ buildTag(){
   fi
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
-  ./scripts-override/build-normal-one-tag.sh $tag && true
+  ./scripts-override/build-normal-one-tag.sh $tag $options && true
   exit_code=$?
   
   if [ "$exit_code" -ne 0 ]; then
@@ -31,9 +32,8 @@ gitTags=$(git tag)
 
 mkdir -p build/tags
 
-# https://stackoverflow.com/questions/59838/how-do-i-check-if-a-directory-exists-or-not-in-a-bash-shell-script/59839#59839
 for tag in $gitTags; do
-  buildTag $tag
+  buildTag $tag $*
 done
 
 exit $final_exit_code
