@@ -1,7 +1,7 @@
 # Creates a "build/tags-github-releases/<tag name>" folder containing the GitHub release files for the compiled Rust program as it was at that git tag.
 
 # Usage:
-#   <script file> <path options>
+#   <script file> <tag name> <path options>
 # path options:
 #   --no-link
 #     nix build will not produce an output symlink
