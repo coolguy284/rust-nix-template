@@ -29,15 +29,15 @@ repo_root=$(pwd)
 
 options=("$@")
 
-cd $orig_cwd
+cd "$orig_cwd"
 
 # For some reason if the contents of this variable are pasted directly into the one use of $symlink_options below, it bypasses "set -e" so even if the command errors it doesnt exit the script; so it must be saved to a variable to trigger "set -e"
 # https://unix.stackexchange.com/questions/717945/prevent-splitting-command-line-argument-at-spaces-when-running-in-bash-script/717949#717949
-symlink_options="$("$repo_root/scripts/lib/symlink-args-gen.sh" $orig_cwd $repo_root normal current "" "${options[@]}")"
+symlink_options="$("$repo_root/scripts/lib/symlink-args-gen.sh" "$orig_cwd" "$repo_root" normal current "" "${options[@]}")"
 
 store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-github-releases $symlink_options --print-out-paths)
 
-cd $repo_root
+cd "$repo_root"
 
 mkdir -p build
 

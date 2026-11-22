@@ -45,7 +45,7 @@ buildTag(){
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
   # https://unix.stackexchange.com/questions/717945/prevent-splitting-command-line-argument-at-spaces-when-running-in-bash-script/717949#717949
-  (cd $orig_cwd && "$repo_root/scripts-override/build-github-one-tag.sh" $tag "${options[@]}") && true
+  (cd "$orig_cwd" && "$repo_root/scripts-override/build-github-one-tag.sh" $tag "${options[@]}") && true
   exit_code=$?
   
   if [ "$exit_code" -ne 0 ]; then

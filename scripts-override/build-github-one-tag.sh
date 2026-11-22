@@ -44,11 +44,11 @@ if [ ! -d "build/tags-github-releases/$tag" ]; then
     exit 1
   fi
   
-  cd $orig_cwd
+  cd "$orig_cwd"
   
   # For some reason if the contents of this variable are pasted directly into the one use of $symlink_options below, it bypasses "set -e" so even if the command errors it doesnt exit the script; so it must be saved to a variable to trigger "set -e"
   # https://unix.stackexchange.com/questions/717945/prevent-splitting-command-line-argument-at-spaces-when-running-in-bash-script/717949#717949
-  symlink_options="$("$repo_root/scripts/lib/symlink-args-gen.sh" $orig_cwd $repo_root github tag $tag "${options[@]}")"
+  symlink_options="$("$repo_root/scripts/lib/symlink-args-gen.sh" "$orig_cwd" "$repo_root" github tag $tag "${options[@]}")"
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786104#786104
   # https://stackoverflow.com/questions/15541321/set-a-parent-shells-variable-from-a-subshell/15543655#15543655
@@ -59,7 +59,7 @@ if [ ! -d "build/tags-github-releases/$tag" ]; then
     exit $build_result
   fi
   
-  cd $repo_root
+  cd "$repo_root"
   
   cp -r $store_path build/tags-github-releases/$tag
 fi
