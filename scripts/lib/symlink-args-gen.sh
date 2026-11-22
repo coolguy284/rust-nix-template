@@ -1,6 +1,6 @@
-set -euo pipefail
+# This is run in the same script instance, as an import
 
-. "${0%/*}/constants.sh"
+. "$repo_root/scripts/lib/constants.sh"
 
 getSubPath(){
   # "normal" or "github"
