@@ -31,7 +31,10 @@ options=$*
 
 cd $orig_cwd
 
-store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-all-platforms $("$repo_root/scripts/lib/symlink-args-gen.sh" $orig_cwd $repo_root normal current "" $options) --print-out-paths)
+# For some reason if the contents of this variable are pasted directly into the one use of $symlink_options below, it bypasses "set -e" so even if the command errors it doesnt exit the script; so it must be saved to a variable to trigger "set -e"
+symlink_options="$("$repo_root/scripts/lib/symlink-args-gen.sh" $orig_cwd $repo_root normal current "" $options)"
+
+store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-all-platforms $symlink_options --print-out-paths)
 
 cd $repo_root
 
