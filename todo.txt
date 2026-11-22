@@ -1,4 +1,5 @@
 low prio:
+fix scripts not working from a cd that isnt the repo dir
 test store result symlink from builds somewhere feature
   test with spaces in the input paths given to the scripts
 nix check and nix fmt flake outputs

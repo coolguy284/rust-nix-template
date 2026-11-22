@@ -32,7 +32,8 @@ final_exit_code=0
 # https://www.geeksforgeeks.org/linux-unix/bash-scripting-functions/
 buildTag(){
   tag=$1
-  options=(${*:2})
+  # https://www.google.com/search?q=bash+(%2524%7B*%253A1%7D)+splits+by+spaces
+  options=("${@:2}")
   
   # https://stackoverflow.com/questions/22861580/bash-script-check-if-a-file-contains-a-specific-line/69022922#69022922
   if
@@ -43,7 +44,8 @@ buildTag(){
   fi
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786153#786153
-  (cd $orig_cwd && "$repo_root/scripts-override/build-normal-one-tag.sh" $tag $options) && true
+  # https://unix.stackexchange.com/questions/717945/prevent-splitting-command-line-argument-at-spaces-when-running-in-bash-script/717949#717949
+  (cd $orig_cwd && "$repo_root/scripts-override/build-normal-one-tag.sh" $tag "${options[@]}") && true
   exit_code=$?
   
   if [ "$exit_code" -ne 0 ]; then
@@ -55,8 +57,9 @@ git_tags=$(git tag)
 
 mkdir -p build/tags
 
+# https://stackoverflow.com/questions/4824590/propagate-all-arguments-in-a-bash-shell-script/3190826#3190826
 for tag in $git_tags; do
-  buildTag $tag $*
+  buildTag $tag "$@"
 done
 
 exit $final_exit_code

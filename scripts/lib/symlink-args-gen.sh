@@ -44,7 +44,8 @@ linkParse(){
   build_out_type=$4
   # "" for build_out_type current
   tag_name=$5
-  cli_args=(${*:6})
+  # https://www.google.com/search?q=bash+(%2524%7B*%253A1%7D)+splits+by+spaces
+  cli_args=("${@:6}")
   
   # https://stackoverflow.com/questions/7832080/test-if-a-variable-is-set-in-bash-when-using-set-o-nounset/7832158#7832158
   if [ -z "${cli_args:-}" ] || [ "${cli_args[0]}" == "--local-link" ]; then
@@ -69,4 +70,5 @@ linkParse(){
   fi
 }
 
-linkParse $*
+# https://stackoverflow.com/questions/4824590/propagate-all-arguments-in-a-bash-shell-script/3190826#3190826
+linkParse "$@"
