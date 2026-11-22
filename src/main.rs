@@ -1,3 +1,8 @@
+// Original (intended) file contents:
+//fn main() {
+//  println!("Hello world v{}!", env!("CARGO_PKG_VERSION"));
+//}
+
 use std::env::{ArgsOs, args_os};
 use std::error::Error;
 use std::fmt;
@@ -32,13 +37,15 @@ fn decode_prgm_args(prgm_args: ArgsOs) -> Result<Vec<String>, ArgDecodeError> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-  println!("coolguy284/rust-nix-template v{}", env!("CARGO_PKG_VERSION"));
+  println!();
+  println!("Rust Nix Template v{}", env!("CARGO_PKG_VERSION"));
   println!();
   
   println!("Command line arguments:");
   for (index, arg) in decode_prgm_args(args_os())?.iter().enumerate() {
-    println!("{}, {}", index, arg);
+    println!("{}: {}", index, arg);
   }
+  println!();
   
   Ok(())
 }
