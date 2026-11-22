@@ -36,8 +36,8 @@ if [ ! -d "build/tags-github-releases/$tag" ]; then
   
   # https://stackoverflow.com/questions/22861580/bash-script-check-if-a-file-contains-a-specific-line/69022922#69022922
   if
-    [ -f "./scripts/lib/tag-ignore-list.txt" ] &&
-    grep -Fxq "$tag" "./scripts/lib/tag-ignore-list.txt"
+    [ -f "./scripts/lib/github-tag-ignore-list.txt" ] &&
+    grep -Fxq "$tag" "./scripts/lib/github-tag-ignore-list.txt"
   then
     echo Error: tag $tag is in ignore list 1>&2
     exit 1
