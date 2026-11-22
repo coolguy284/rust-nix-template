@@ -46,7 +46,7 @@ linkParse(){
   tag_name=$5
   cli_args=${*:6}
   
-  if [ "${#cli_args[@]}" -eq 0 ] || [ "${cli_args[0]}" == "--local-link" ]; then
+  if [ -z "${cli_args+set}" ] || [ "${cli_args[0]}" == "--local-link" ]; then
     # local link (default)
     return "--out-link" "$repo_root/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
   elif [ "${cli_args[0]}" == "--home-link" ]; then

@@ -23,7 +23,7 @@ set -euo pipefail
 
 orig_cwd=$(pwd)
 
-cd "${0%/*}/.."
+cd "${0%/*}/../.."
 
 repo_root=$(pwd)
 
