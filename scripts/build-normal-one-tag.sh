@@ -27,6 +27,8 @@ cd "${0%/*}/.."
 
 repo_root=$(pwd)
 
+. "$repo_root/scripts/lib/symlink-args-gen.sh"
+
 tag=$1
 # https://www.google.com/search?q=bash+(%2524%7B*%253A1%7D)+splits+by+spaces
 options=("${@:2}")
@@ -46,13 +48,13 @@ if [ ! -d "build/tags/$tag" ]; then
   
   cd "$orig_cwd"
   
-  # For some reason if the contents of this variable are pasted directly into the one use of $symlink_options below, it bypasses "set -e" so even if the command errors it doesnt exit the script; so it must be saved to a variable to trigger "set -e"
   # https://unix.stackexchange.com/questions/717945/prevent-splitting-command-line-argument-at-spaces-when-running-in-bash-script/717949#717949
-  symlink_options="$("$repo_root/scripts/lib/symlink-args-gen.sh" "$orig_cwd" "$repo_root" normal tag $tag "${options[@]}")"
+  symlinkArgsGen "$orig_cwd" "$repo_root" normal tag $tag "${options[@]}"
+  symlink_options="${symlinkArgsGen_return[@]}"
   
   # https://unix.stackexchange.com/questions/786103/in-bash-how-to-capture-stdout-and-the-exit-code-of-a-command-when-the-e-flag-i/786104#786104
   # https://stackoverflow.com/questions/15541321/set-a-parent-shells-variable-from-a-subshell/15543655#15543655
-  { { store_path=$(nix --extra-experimental-features 'nix-command flakes' build "git+file:$repo_root?ref=$tag#build-all-platforms" $symlink_options --print-out-paths); } && build_result=$?; } || build_result=$?
+  { { store_path=$(nix --extra-experimental-features 'nix-command flakes' build "git+file:$repo_root?ref=$tag#build-all-platforms" "${symlink_options[@]}" --print-out-paths); } && build_result=$?; } || build_result=$?
   
   if [ $build_result -ne 0 ]; then
     echo Error building version $tag
