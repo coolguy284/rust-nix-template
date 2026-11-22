@@ -14,9 +14,6 @@
 #   --custom-link <location>
 #     output symlink path is the path given without the additional augmentation below
 # if output link is to be created nix build will put output link at:
-#   <path>/current-normal
-#   <path>/current-github
-#   <path>/tags-normal/<tag name>
 #   <path>/tags-github/<tag name>
 
 set -euo pipefail
