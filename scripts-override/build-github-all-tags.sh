@@ -1,4 +1,4 @@
-# Creates "build/tags-github-releases/<tag name>" folders containing the GitHub release files for the compiled Rust program as it was at those git tags.
+# Creates "build/tags-github-releases/<tag name>" folders containing the GitHub release files for the compiled Rust program as it was at those git tags. Has some specific overrides for this template project that wouldnt be needed in a copy of this project.
 
 # Usage:
 #   <script file> <path options>
