@@ -15,7 +15,7 @@ getSubPath(){
       return "current-github"
     else
       # https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script/30078353#30078353
-      echo "mode not recognized: $mode"
+      echo "mode not recognized: $mode" 1>&2
       exit 1
     fi
   elif [ "$build_out_type" == "tag" ]; then
@@ -25,12 +25,12 @@ getSubPath(){
       return "tags-github/$tag_name"
     else
       # https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script/30078353#30078353
-      echo "mode not recognized: $mode"
+      echo "mode not recognized: $mode" 1>&2
       exit 1
     fi
   else
     # https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script/30078353#30078353
-    echo "build_out_type not recognized: $build_out_type"
+    echo "build_out_type not recognized: $build_out_type" 1>&2
     exit 1
   fi
 }
@@ -62,7 +62,7 @@ linkParse(){
     # no link
     return "--no-link"
   else
-    echo "cli arg 0 not recognized: ${cli_args[0]}"
+    echo "cli arg 0 not recognized: ${cli_args[0]}" 1>&2
     exit 1
   fi
 }

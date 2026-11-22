@@ -39,7 +39,7 @@ if [ ! -d "build/tags/$tag" ]; then
     [ -f "./scripts-override/lib/tag-ignore-list.txt" ] &&
     grep -Fxq "$tag" "./scripts-override/lib/tag-ignore-list.txt"
   then
-    echo Error: tag $tag is in ignore list
+    echo Error: tag $tag is in ignore list 1>&2
     exit 1
   fi
   
