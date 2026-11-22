@@ -28,7 +28,7 @@ options=${*:1}
 
 if [ "$tag" = "v0.1.0-hash-fix" ] || [ "$tag" = "v0.2.0-hash-fix" ]; then
   "$repoPath/scripts-override/lib/build-normal-one-old-tag.sh" $tag $options
-else if [ "$tag" = "v0.3.0" ] || [ "$tag" = "v0.4.0" ]; then
+elif [ "$tag" = "v0.3.0" ] || [ "$tag" = "v0.4.0" ]; then
   "$repoPath/scripts-override/lib/build-normal-one-old2-tag.sh" $tag $options
 else
   "$repoPath/scripts-override/lib/build-normal-one-tag.sh" $tag $options

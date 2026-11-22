@@ -11,17 +11,17 @@ getSubPath(){
   if [ "$build_out_type" == "current" ]; then
     if [ "$mode" == "normal" ]; then
       return "current-normal"
-    else if [ "$mode" == "github" ]; then
+    elif [ "$mode" == "github" ]; then
       return "current-github"
     else
       # https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script/30078353#30078353
       echo "mode not recognized: $mode"
       exit 1
     fi
-  else if [ "$build_out_type" == "tag" ]; then
+  elif [ "$build_out_type" == "tag" ]; then
     if [ "$mode" == "normal" ]; then
       return "tags-normal/$tag_name"
-    else if [ "$mode" == "github" ]; then
+    elif [ "$mode" == "github" ]; then
       return "tags-github/$tag_name"
     else
       # https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script/30078353#30078353
@@ -49,18 +49,21 @@ linkParse(){
   if [ "${#cli_args[@]}" -eq 0 ] || [ "${cli_args[0]}" == "--local-link" ]; then
     # local link (default)
     return "--out-link" "$repo_root/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
-  else if [ "${cli_args[0]}" == "--home-link" ]; then
+  elif [ "${cli_args[0]}" == "--home-link" ]; then
     # home link
     return "--out-link" "~/.cache/git-nix-symlinks/$REPO_PATH/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
-  else if [ "${cli_args[0]}" == "--custom-path-link" ]; then
+  elif [ "${cli_args[0]}" == "--custom-path-link" ]; then
     # custom path link
     return "--out-link" "${cli_args[1]}/$(getSubPath $mode $build_out_type $tag_name)"
-  else if [ "${cli_args[0]}" == "--custom-link" ]; then
+  elif [ "${cli_args[0]}" == "--custom-link" ]; then
     # custom link
     return "--out-link" "${cli_args[1]}"
-  else if [ "${cli_args[0]}" == "--no-link" ]; then
+  elif [ "${cli_args[0]}" == "--no-link" ]; then
     # no link
     return "--no-link"
+  else
+    echo "cli arg 0 not recognized: ${cli_args[0]}"
+    exit 1
   fi
 }
 
