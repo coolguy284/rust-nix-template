@@ -53,7 +53,7 @@ linkParse(){
   elif [ "${cli_args[0]}" == "--home-link" ]; then
     # home link
     # https://superuser.com/questions/271925/where-is-the-home-environment-variable-set
-    echo "--out-link" "$HOME/.cache/git-nix-symlinks/$REPO_PATH/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
+    echo "--out-link" "$HOME/.cache/git-nix-symlinks/$REPO_PATH/$(getSubPath $mode $build_out_type $tag_name)"
   elif [ "${cli_args[0]}" == "--custom-path-link" ]; then
     # custom path link
     echo "--out-link" "${cli_args[1]}/$(getSubPath $mode $build_out_type $tag_name)"
