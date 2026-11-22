@@ -10,9 +10,9 @@ getSubPath(){
   
   if [ "$build_out_type" == "current" ]; then
     if [ "$mode" == "normal" ]; then
-      return "current-normal"
+      echo "current-normal"
     elif [ "$mode" == "github" ]; then
-      return "current-github"
+      echo "current-github"
     else
       # https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script/30078353#30078353
       echo "mode not recognized: $mode" 1>&2
@@ -20,9 +20,9 @@ getSubPath(){
     fi
   elif [ "$build_out_type" == "tag" ]; then
     if [ "$mode" == "normal" ]; then
-      return "tags-normal/$tag_name"
+      echo "tags-normal/$tag_name"
     elif [ "$mode" == "github" ]; then
-      return "tags-github/$tag_name"
+      echo "tags-github/$tag_name"
     else
       # https://stackoverflow.com/questions/30078281/raise-error-in-a-bash-script/30078353#30078353
       echo "mode not recognized: $mode" 1>&2
@@ -46,21 +46,22 @@ linkParse(){
   tag_name=$5
   cli_args=${*:6}
   
-  if [ -z "${cli_args+set}" ] || [ "${cli_args[0]}" == "--local-link" ]; then
+  # https://stackoverflow.com/questions/7832080/test-if-a-variable-is-set-in-bash-when-using-set-o-nounset/7832158#7832158
+  if [ -z "${cli_args:-}" ] || [ "${cli_args[0]}" == "--local-link" ]; then
     # local link (default)
-    return "--out-link" "$repo_root/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
+    echo "--out-link" "$repo_root/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
   elif [ "${cli_args[0]}" == "--home-link" ]; then
     # home link
-    return "--out-link" "~/.cache/git-nix-symlinks/$REPO_PATH/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
+    echo "--out-link" "~/.cache/git-nix-symlinks/$REPO_PATH/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
   elif [ "${cli_args[0]}" == "--custom-path-link" ]; then
     # custom path link
-    return "--out-link" "${cli_args[1]}/$(getSubPath $mode $build_out_type $tag_name)"
+    echo "--out-link" "${cli_args[1]}/$(getSubPath $mode $build_out_type $tag_name)"
   elif [ "${cli_args[0]}" == "--custom-link" ]; then
     # custom link
-    return "--out-link" "${cli_args[1]}"
+    echo "--out-link" "${cli_args[1]}"
   elif [ "${cli_args[0]}" == "--no-link" ]; then
     # no link
-    return "--no-link"
+    echo "--no-link"
   else
     echo "cli arg 0 not recognized: ${cli_args[0]}" 1>&2
     exit 1
