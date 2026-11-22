@@ -1,4 +1,4 @@
-// Original (intended) file contents:
+// The contents of this file can be safely removed, or replaced with the following:
 //fn main() {
 //  println!("Hello world v{}!", env!("CARGO_PKG_VERSION"));
 //}
