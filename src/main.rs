@@ -37,7 +37,6 @@ fn decode_prgm_args(prgm_args: ArgsOs) -> Result<Vec<String>, ArgDecodeError> {
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
-  println!();
   println!("Rust Nix Template v{}", env!("CARGO_PKG_VERSION"));
   println!();
   
@@ -45,7 +44,6 @@ fn main() -> Result<(), Box<dyn Error>> {
   for (index, arg) in decode_prgm_args(args_os())?.iter().enumerate() {
     println!("{}: {}", index, arg);
   }
-  println!();
   
   Ok(())
 }
