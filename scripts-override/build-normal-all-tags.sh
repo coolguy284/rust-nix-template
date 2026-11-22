@@ -1,4 +1,4 @@
-# Creates "build/tags/<tag name>/<architecture>" folders containing the compiled Rust program as it was at that git tag. Has some specific overrides for this template project that wouldnt be needed in a copy of this project.
+# Creates "build/tags/<tag name>/<architecture>" folders containing the compiled Rust program as it was at that git tag. Has some specific overrides for this template project that wouldn't be needed in a copy of this project.
 
 # Usage:
 #   <script file> <path options>
