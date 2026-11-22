@@ -28,7 +28,7 @@ cd "${0%/*}/../.."
 repo_root=$(pwd)
 
 tag=$1
-options=${*:1}
+options=${*:2}
 
 # https://stackoverflow.com/questions/59838/how-do-i-check-if-a-directory-exists-or-not-in-a-bash-shell-script/59839#59839
 if [ ! -d "build/tags/$tag" ]; then
