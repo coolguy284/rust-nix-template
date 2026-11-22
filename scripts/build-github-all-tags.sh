@@ -32,7 +32,7 @@ final_exit_code=0
 # https://www.geeksforgeeks.org/linux-unix/bash-scripting-functions/
 buildTag(){
   tag=$1
-  options=${*:2}
+  options=(${*:2})
   
   # https://stackoverflow.com/questions/22861580/bash-script-check-if-a-file-contains-a-specific-line/69022922#69022922
   if

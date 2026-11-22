@@ -44,7 +44,7 @@ linkParse(){
   build_out_type=$4
   # "" for build_out_type current
   tag_name=$5
-  cli_args=${*:6}
+  cli_args=(${*:6})
   
   # https://stackoverflow.com/questions/7832080/test-if-a-variable-is-set-in-bash-when-using-set-o-nounset/7832158#7832158
   if [ -z "${cli_args:-}" ] || [ "${cli_args[0]}" == "--local-link" ]; then
