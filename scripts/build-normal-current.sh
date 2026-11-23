@@ -34,7 +34,7 @@ cd "$orig_cwd"
 symlinkArgsGen "$orig_cwd" "$repo_root" normal current "" "${options[@]}"
 symlink_options=("${symlinkArgsGen_return[@]}")
 
-store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-all-platforms "${symlink_options[@]}" --print-out-paths)
+store_path=$(nix --extra-experimental-features 'nix-command flakes' build $repo_root#build-all-platforms "${symlink_options[@]}" --print-out-paths)
 
 cd "$repo_root"
 
