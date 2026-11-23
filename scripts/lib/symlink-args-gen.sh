@@ -54,20 +54,20 @@ symlinkArgsGen(){
   # https://stackoverflow.com/questions/7832080/test-if-a-variable-is-set-in-bash-when-using-set-o-nounset/7832158#7832158
   if [ -z "${cli_args:-}" ] || [ "${cli_args[0]}" == "--local-link" ]; then
     # local link (default)
-    symlinkArgsGen_return="--out-link" "$repo_root/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
+    symlinkArgsGen_return=("--out-link" "$repo_root/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)")
   elif [ "${cli_args[0]}" == "--home-link" ]; then
     # home link
     # https://superuser.com/questions/271925/where-is-the-home-environment-variable-set
-    symlinkArgsGen_return="--out-link" "$HOME/.cache/git-nix-symlinks/$REPO_PATH/$(getSubPath $mode $build_out_type $tag_name)"
+    symlinkArgsGen_return=("--out-link" "$HOME/.cache/git-nix-symlinks/$REPO_PATH/$(getSubPath $mode $build_out_type $tag_name)")
   elif [ "${cli_args[0]}" == "--custom-path-link" ]; then
     # custom path link
-    symlinkArgsGen_return="--out-link" "${cli_args[1]}/$(getSubPath $mode $build_out_type $tag_name)"
+    symlinkArgsGen_return=("--out-link" "${cli_args[1]}/$(getSubPath $mode $build_out_type $tag_name)")
   elif [ "${cli_args[0]}" == "--custom-link" ]; then
     # custom link
-    symlinkArgsGen_return="--out-link" "${cli_args[1]}"
+    symlinkArgsGen_return=("--out-link" "${cli_args[1]}")
   elif [ "${cli_args[0]}" == "--no-link" ]; then
     # no link
-    symlinkArgsGen_return="--no-link"
+    symlinkArgsGen_return=("--no-link")
   else
     echo "cli arg 0 not recognized: ${cli_args[0]}" 1>&2
     exit 1
