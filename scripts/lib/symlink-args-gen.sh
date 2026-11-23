@@ -37,6 +37,7 @@ getSubPath(){
   fi
 }
 
+# https://stackoverflow.com/questions/56456794/how-to-return-array-from-bash-function/56456878#56456878
 symlinkArgsGen(){
   orig_cwd=$1
   repo_root=$2
