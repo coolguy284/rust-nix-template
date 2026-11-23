@@ -1,4 +1,5 @@
-# This is run in the same script instance, as an import
+# This script must be run in the same script instance (using . ./<script path>.sh), as an import
+# This script requires the presence of a $repo_root variable with the path to the root of the git repo this is contained in
 
 . "$repo_root/scripts/lib/constants.sh"
 
