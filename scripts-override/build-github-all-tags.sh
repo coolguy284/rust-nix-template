@@ -34,8 +34,8 @@ buildTag(){
   
   # https://stackoverflow.com/questions/22861580/bash-script-check-if-a-file-contains-a-specific-line/69022922#69022922
   if
-    [ -f "./scripts/lib/github-tag-ignore-list.txt" ] &&
-    grep -Fxq "$tag" "./scripts/lib/github-tag-ignore-list.txt"
+    [ -f "./scripts-override/lib/github-tag-ignore-list.txt" ] &&
+    grep -Fxq "$tag" "./scripts-override/lib/github-tag-ignore-list.txt"
   then
     return
   fi
