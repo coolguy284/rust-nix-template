@@ -41,7 +41,7 @@ fn main() -> Result<(), Box<dyn Error>> {
   
   println!("Command line arguments:");
   for (index, arg) in decode_prgm_args(args_os())?.iter().enumerate() {
-    println!("{}: {}", index, arg);
+    println!("{}: {:?}", index, arg);
   }
   
   Ok(())
