@@ -1,4 +1,4 @@
-use std::env::{ArgsOs, args_os};
+use std::env::{ArgsOs, args_os, current_dir};
 use std::error::Error;
 use std::fmt;
 
@@ -33,6 +33,10 @@ fn decode_prgm_args(prgm_args: ArgsOs) -> Result<Vec<String>, ArgDecodeError> {
 
 fn main() -> Result<(), Box<dyn Error>> {
   println!("Rust Nix Template v{}", env!("CARGO_PKG_VERSION"));
+  println!();
+  
+  println!("Current working directory:");
+  println!("{:?}", current_dir()?);
   println!();
   
   println!("Command line arguments:");
