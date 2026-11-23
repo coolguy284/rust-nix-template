@@ -8,19 +8,13 @@ See `scripts` folder for usage scripts. To create a new project, copy the follow
 - `.cargo`
 - `.vscode`
 - `scripts`
+- `src`
 - `.gitignore`
 - `Cargo.lock`
 - `Cargo.toml`
 - `flake.lock`
 - `flake.nix`
 - `rustfmt.toml`
-
-Additionally create `src/main.rs` file with the following contents:
-```rust
-fn main() {
-  println!("Hello world v{}!", env!("CARGO_PKG_VERSION"));
-}
-```
 
 Update `scripts/lib/constants.sh` REPO_PATH to GitHub repository path of new repository (used for the --home-path option on the scripts).
 
