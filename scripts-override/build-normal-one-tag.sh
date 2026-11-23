@@ -14,14 +14,11 @@
 #   --custom-link <location>
 #     output symlink path is the path given without the additional augmentation below
 # if output link is to be created nix build will put output link at:
-#   <path>/current-normal
-#   <path>/current-github
 #   <path>/tags-normal/<tag name>
-#   <path>/tags-github/<tag name>
 
 set -euo pipefail
 
-repoPath="${0%/*}/.."
+repo_root="${0%/*}/.."
 
 tag=$1
 # https://www.google.com/search?q=bash+(%2524%7B*%253A1%7D)+splits+by+spaces
@@ -29,9 +26,9 @@ options=("${@:2}")
 
 # https://unix.stackexchange.com/questions/717945/prevent-splitting-command-line-argument-at-spaces-when-running-in-bash-script/717949#717949
 if [ "$tag" = "v0.1.0-hash-fix" ] || [ "$tag" = "v0.2.0-hash-fix" ]; then
-  "$repoPath/scripts-override/lib/build-normal-one-old-tag.sh" $tag "${options[@]}"
+  "$repo_root/scripts-override/lib/build-normal-one-old-tag.sh" $tag "${options[@]}"
 elif [ "$tag" = "v0.3.0" ] || [ "$tag" = "v0.4.0" ]; then
-  "$repoPath/scripts-override/lib/build-normal-one-old2-tag.sh" $tag "${options[@]}"
+  "$repo_root/scripts-override/lib/build-normal-one-old2-tag.sh" $tag "${options[@]}"
 else
-  "$repoPath/scripts-override/lib/build-normal-one-tag.sh" $tag "${options[@]}"
+  "$repo_root/scripts-override/lib/build-normal-one-tag.sh" $tag "${options[@]}"
 fi

@@ -1,4 +1,7 @@
-. "${0%/*}/constants.sh"
+# This script must be run in the same script instance (using . ./<script path>.sh), as an import
+# This script requires the presence of a $repo_root variable with the path to the root of the git repo this is contained in
+
+. "$repo_root/scripts/lib/constants.sh"
 
 getSubPath(){
   # "normal" or "github"
@@ -35,7 +38,8 @@ getSubPath(){
   fi
 }
 
-linkParse(){
+# https://stackoverflow.com/questions/56456794/how-to-return-array-from-bash-function/56456878#56456878
+symlinkArgsGen(){
   orig_cwd=$1
   repo_root=$2
   # "normal" or "github"
@@ -50,25 +54,22 @@ linkParse(){
   # https://stackoverflow.com/questions/7832080/test-if-a-variable-is-set-in-bash-when-using-set-o-nounset/7832158#7832158
   if [ -z "${cli_args:-}" ] || [ "${cli_args[0]}" == "--local-link" ]; then
     # local link (default)
-    echo "--out-link" "$repo_root/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)"
+    symlinkArgsGen_return=("--out-link" "$repo_root/build/symlinks/$(getSubPath $mode $build_out_type $tag_name)")
   elif [ "${cli_args[0]}" == "--home-link" ]; then
     # home link
     # https://superuser.com/questions/271925/where-is-the-home-environment-variable-set
-    echo "--out-link" "$HOME/.cache/git-nix-symlinks/$REPO_PATH/$(getSubPath $mode $build_out_type $tag_name)"
+    symlinkArgsGen_return=("--out-link" "$HOME/.cache/git-nix-symlinks/$REPO_PATH/$(getSubPath $mode $build_out_type $tag_name)")
   elif [ "${cli_args[0]}" == "--custom-path-link" ]; then
     # custom path link
-    echo "--out-link" "${cli_args[1]}/$(getSubPath $mode $build_out_type $tag_name)"
+    symlinkArgsGen_return=("--out-link" "${cli_args[1]}/$(getSubPath $mode $build_out_type $tag_name)")
   elif [ "${cli_args[0]}" == "--custom-link" ]; then
     # custom link
-    echo "--out-link" "${cli_args[1]}"
+    symlinkArgsGen_return=("--out-link" "${cli_args[1]}")
   elif [ "${cli_args[0]}" == "--no-link" ]; then
     # no link
-    echo "--no-link"
+    symlinkArgsGen_return=("--no-link")
   else
     echo "cli arg 0 not recognized: ${cli_args[0]}" 1>&2
     exit 1
   fi
 }
-
-# https://stackoverflow.com/questions/4824590/propagate-all-arguments-in-a-bash-shell-script/3190826#3190826
-linkParse "$@"
