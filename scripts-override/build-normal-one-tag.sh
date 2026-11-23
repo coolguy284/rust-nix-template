@@ -27,7 +27,7 @@ options=("${@:2}")
 # https://unix.stackexchange.com/questions/717945/prevent-splitting-command-line-argument-at-spaces-when-running-in-bash-script/717949#717949
 if [ "$tag" = "v0.1.0-hash-fix" ] || [ "$tag" = "v0.2.0-hash-fix" ]; then
   "$repo_root/scripts-override/lib/build-normal-one-old-tag.sh" $tag "${options[@]}"
-elif [ "$tag" = "v0.3.0" ] || [ "$tag" = "v0.4.0" ]; then
+elif [ "$tag" = "v0.3.0-hash-fix" ] || [ "$tag" = "v0.4.0" ]; then
   "$repo_root/scripts-override/lib/build-normal-one-old2-tag.sh" $tag "${options[@]}"
 else
   "$repo_root/scripts-override/lib/build-normal-one-tag.sh" $tag "${options[@]}"
