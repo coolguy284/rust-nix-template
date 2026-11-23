@@ -32,7 +32,7 @@ cd "$orig_cwd"
 
 # https://unix.stackexchange.com/questions/717945/prevent-splitting-command-line-argument-at-spaces-when-running-in-bash-script/717949#717949
 symlinkArgsGen "$orig_cwd" "$repo_root" normal current "" "${options[@]}"
-symlink_options="${symlinkArgsGen_return[@]}"
+symlink_options=("${symlinkArgsGen_return[@]}")
 
 store_path=$(nix --extra-experimental-features 'nix-command flakes' build .#build-all-platforms "${symlink_options[@]}" --print-out-paths)
 
